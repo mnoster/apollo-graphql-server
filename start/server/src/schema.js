@@ -1,5 +1,11 @@
 const { gql } = require('apollo-server');
 
+// Queries enable clients to fetch data, but not to modify data. To enable
+// clients to modify data, our schema needs to define some mutations.
+
+// The Mutation type defines three available mutations for clients to execute: 
+// bookTrips, cancelTrip, and login.
+
 const typeDefs = gql`
   type Launch {
     id: ID!
@@ -35,6 +41,18 @@ const typeDefs = gql`
     launches: [Launch]!
     launch(id: ID!): Launch
     me: User
+  }
+
+  type Mutation {
+    bookTrips(launchIds: [ID]!): TripUpdateResponse!
+    cancelTrip(launchId: ID!): TripUpdateResponse!
+    login(email: String): String # login token
+  }
+
+  type TripUpdateResponse {
+    success: Boolean!
+    message: String
+    launches: [Launch]
   }
   `;
 
